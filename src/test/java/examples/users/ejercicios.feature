@@ -107,3 +107,71 @@ Feature: Ejercicios Clase 02
     And match responseType =="json"
     And match $.name == "morpheus"
     And match $.job == "zion resident"
+
+  Scenario: Caso 12 - BUSCAR COMENTARIOS POSTID
+    Given url "https://jsonplaceholder.typicode.com/"
+    And path "/comments"
+    And param postId = "1"
+    When method get
+    Then status 200
+@case13
+  Scenario: Caso 13 - crear post con doString en variable
+    * def body =
+    """
+    {
+      'userId': 1,
+      'title': 'Post de prueba',
+      'body': 'Body de prueba'
+    }
+    """
+    Given url "https://jsonplaceholder.typicode.com/"
+    And path "/posts"
+    And request body
+    When method post
+    Then status 201
+    * print response
+    And match response.title == "Post de prueba"
+    And match response.body == "Body de prueba"
+    And match response.userId == 1
+
+  Scenario: Caso 14 - Crear post con doString en variable
+    * def body =
+    """
+    {
+      'userId': 1,
+      'title': 'Post de prueba',
+      'body': 'Body de prueba'
+    }
+    """
+    Given url "https://jsonplaceholder.typicode.com/"
+    And path "/posts"
+    And request body
+    When method post
+    Then status 201
+    * print response
+    And match response ==
+    """
+    {
+      'id': #number,
+      'userId': #number,
+      'title': #string,
+      'body': #string
+    }
+    """
+
+  Scenario: Caso 15 - Crear post con Json en variable
+    * def body =
+    """
+    {
+      'userId': 1,
+      'title': 'Post de prueba',
+      'body': 'Body de prueba'
+    }
+    """
+    Given url "https://jsonplaceholder.typicode.com/"
+    And path "/posts"
+    And request body
+    When method post
+    Then status 201
+    * print response
+    And match response == read ('estructuraresponse.json')
